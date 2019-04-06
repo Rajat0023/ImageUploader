@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -39,10 +38,47 @@ public class UserController {
 
     //This controller method is called when the request pattern is of type 'users/registration' and also the incoming request is of POST type
     //This method calls the business logic and after the user record is persisted in the database, directs to login page
+    /*
+    In this method, the password strength feature is implemented wherein, a user is only registered if the password entered by him/her
+    contains 1 alphabet, 1 number, and 1 special character. Upon successful registration the view- users/login is redirected.
+    Otherwise, an error prompt is shown, the user is not registered and again the users/registration view is rendered.
+     */
     @RequestMapping(value = "users/registration", method = RequestMethod.POST)
-    public String registerUser(User user) {
-        userService.registerUser(user);
-        return "redirect:/users/login";
+    public String registerUser(User user, Model model) {
+        String password = user.getPassword();
+        /*
+    Now,the business logic is implemented for the password check. The password given by the user is passed on
+    from the UserController method and performed a series of checks for letter(upper or lower case),a digit and a special character
+    (other than digit,letter any character) using the Character wrapper class in java.lang. The result of this logic check is returned
+    and accordingly the view is rendered.
+     */
+            boolean hasLetter = false;
+            boolean hasDigit = false;
+            boolean hasSpecial = false;
+            boolean result = false;
+            for (int i = 0; i < password.length(); i++) {
+                char x = password.charAt(i);
+                if (Character.isLetter(x)) {
+                    hasLetter = true;
+                } else if (Character.isDigit(x)) {
+                    hasDigit = true;
+                } else {
+                    hasSpecial = true;
+                }
+            }
+            if (hasLetter == true && hasDigit == true && hasSpecial == true) {  // true is returned only if all three conditions are true
+                result = true;
+            }
+        if (result) {
+            userService.registerUser(user);
+            model.addAttribute("User", user);
+            return "users/login";
+        } else {
+            String error ="Password must contain atleast 1 alphabet, 1 number & 1 special character";
+            model.addAttribute("passwordTypeError",error);
+            model.addAttribute("User", user);       // adding user attribute to the Model object
+            return "users/registration";
+        }
     }
 
     //This controller method is called when the request pattern is of type 'users/login'
@@ -74,7 +110,6 @@ public class UserController {
     @RequestMapping(value = "users/logout", method = RequestMethod.POST)
     public String logout(Model model, HttpSession session) {
         session.invalidate();
-
         List<Image> images = imageService.getAllImages();
         model.addAttribute("images", images);
         return "index";
