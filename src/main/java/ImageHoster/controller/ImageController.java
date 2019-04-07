@@ -121,7 +121,6 @@ public class ImageController {
         }
     }
 
-
     //This controller method is called when the request pattern is of type 'images/edit' and also the incoming request is of PUT type
     //The method receives the imageFile, imageId, updated image, along with the Http Session
     //The method adds the new imageFile to the updated image if user updates the imageFile and adds the previous imageFile to the new updated image if user does not choose to update the imageFile
@@ -130,9 +129,10 @@ public class ImageController {
     //Set the date on which the image is posted
     //Call the updateImage() method in the business logic to update the image
     //Direct to the same page showing the details of that particular updated image
-
-    //The method also receives tags parameter which is a string of all the tags separated by a comma using the annotation @RequestParam
-    //The method converts the string to a list of all the tags using findOrCreateTags() method and sets the tags attribute of an image as a list of all the tags
+    /*
+    The method also receives tags parameter which is a string of all the tags separated by a comma using the annotation @RequestParam
+    The method converts the string to a list of all the tags using findOrCreateTags() method and sets the tags attribute of an image as a list of all the tags
+    */
     @RequestMapping(value = "/editImage", method = RequestMethod.PUT)
     public String editImageSubmit(@RequestParam("file") MultipartFile file, @RequestParam("imageId") Integer imageId, @RequestParam("tags") String tags, Image updatedImage, HttpSession session) throws IOException {
         Image image = imageService.getImage(imageId);
@@ -151,7 +151,6 @@ public class ImageController {
         imageService.updateImage(updatedImage);
         return "redirect:/images/"; // + updatedImage.getTitle();
     }
-
 
     //This controller method is called when the request pattern is of type 'deleteImage' and also the incoming request is of DELETE type
     //The method calls the deleteImage() method in the business logic passing the id of the image to be deleted
@@ -179,7 +178,6 @@ public class ImageController {
         }
     }
 
-
     //This method converts the image to Base64 format
     private String convertUploadedFileToBase64(MultipartFile file) throws IOException {
         return Base64.getEncoder().encodeToString(file.getBytes());
@@ -204,7 +202,6 @@ public class ImageController {
         }
         return tags;
     }
-
 
     //The method receives the list of all tags
     //Converts the list of all tags to a single string containing all the tags separated by a comma
