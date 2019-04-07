@@ -1,5 +1,6 @@
 package ImageHoster.controller;
 
+import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
 import ImageHoster.model.Tag;
 import ImageHoster.model.User;
@@ -54,10 +55,12 @@ public class ImageController {
         Image image = imageService.getImage(imageId);
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
+        List<Comment> comments = image.getComments();       // Getting the list of comments belonging to a particular image
+        model.addAttribute("comments",comments);        // Adding attribute with key as "comments" in the model object
         return "images/image";
     }
 
-        //This controller method is called when the request pattern is of type 'images/upload'
+    //This controller method is called when the request pattern is of type 'images/upload'
     //The method returns 'images/upload.html' file
     @RequestMapping("/images/upload")
     public String newImage() {
@@ -110,6 +113,8 @@ public class ImageController {
             String error = "Only the owner of the image can edit the image";
             model.addAttribute("editError", error);
             model.addAttribute("tags",image.getTags());
+            List<Comment> comments = image.getComments();
+            model.addAttribute("comments",comments);
             return "images/image";
         } else {
             return "images/edit";
@@ -165,6 +170,8 @@ public class ImageController {
         if (image.getUser().getId() != user.getId()) {
             String error = "Only the owner of the image can delete the image";
             model.addAttribute("deleteError", error);
+            List<Comment> comments = image.getComments();
+            model.addAttribute("comments",comments);
             return "/images/image";
         } else {
             imageService.deleteImage(imageId);
@@ -204,14 +211,15 @@ public class ImageController {
     //Returns the string
     private String convertTagsToString(List<Tag> tags) {
         StringBuilder tagString = new StringBuilder();
-
-        for (int i = 0; i <= tags.size() - 2; i++) {
-            tagString.append(tags.get(i).getName()).append(",");
+        try {
+            for (int i = 0; i <= tags.size() - 2; i++) {
+                tagString.append(tags.get(i).getName()).append(",");
+            }
+            Tag lastTag = tags.get(tags.size() - 1);
+            tagString.append(lastTag.getName());
+        }catch (ArrayIndexOutOfBoundsException e)
+        {
         }
-
-        Tag lastTag = tags.get(tags.size() - 1);
-        tagString.append(lastTag.getName());
-
         return tagString.toString();
     }
 }
