@@ -1,4 +1,4 @@
-/*
+
 package ImageHoster.controller;
 
 import ImageHoster.service.ImageService;
@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(HomeController.class)
 public class HomeControllerTest {
-
     protected MockHttpSession session;
 
     @Autowired
@@ -36,4 +35,4 @@ public class HomeControllerTest {
                 .andExpect(content().string(containsString("Image Hoster")));
     }
 }
-*/
+

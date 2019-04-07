@@ -99,7 +99,6 @@ public class ImageRepository {
     public void deleteImage(Integer imageId) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-
         try {
             transaction.begin();
             Image image = em.find(Image.class, imageId);
