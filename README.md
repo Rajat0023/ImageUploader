@@ -1,2 +1,2 @@
 "# ImageUploader" 
-All Project files have been pushed as per the bugs fixed/Features implemented
+All Project files have been pushed as per the bugs fixed/Features implemented in sequential commits
