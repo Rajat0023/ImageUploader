@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -28,7 +27,6 @@ public class CommentController {
     @RequestMapping(value="/image/{imageId}/{imageTitle}/comments",method = RequestMethod.POST)
     public String createComment(@RequestParam("comment")String text, @PathVariable("imageId") Integer imageId, @PathVariable("imageTitle")String title, Comment newcomment, Model model, HttpSession session)
     {
-
         User user = (User)session.getAttribute("loggeduser");
         newcomment.setUser(user);
         Image image = imageService.getImage(imageId);

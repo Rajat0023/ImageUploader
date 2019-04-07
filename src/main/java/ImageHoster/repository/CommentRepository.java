@@ -20,7 +20,7 @@ public class CommentRepository {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(newComment);
+            em.persist(newComment);     // Persisting the comment in the DB
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

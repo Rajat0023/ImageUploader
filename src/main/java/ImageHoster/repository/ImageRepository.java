@@ -2,7 +2,6 @@ package ImageHoster.repository;
 
 import ImageHoster.model.Image;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,17 +13,16 @@ public class ImageRepository {
     @PersistenceUnit(unitName = "imageHoster")
     private EntityManagerFactory emf;
 
-
-    //The method receives the Image object to be persisted in the database
-    //Creates an instance of EntityManager
-    //Starts a transaction
-    //The transaction is committed if it is successful
-    //The transaction is rolled back in case of unsuccessful transaction
+    /*
+    The method receives the Image object to be persisted in the database
+    Creates an instance of EntityManager
+    Starts a transaction
+    The transaction is committed if it is successful
+    The transaction is rolled back in case of unsuccessful transaction
+    */
     public Image uploadImage(Image newImage) {
-
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-
         try {
             transaction.begin();
             em.persist(newImage);
